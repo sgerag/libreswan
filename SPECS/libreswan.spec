@@ -37,7 +37,7 @@ Name: libreswan
 Summary: IPsec implementation with IKEv1 and IKEv2 keying protocols
 # version is generated in the release script
 Version: 4.12
-Release: 2.3.1%{?dist}
+Release: 2.3.2%{?dist}
 License: GPLv2
 Url: https://libreswan.org/
 
@@ -110,14 +110,7 @@ Libreswan also supports IKEv2 (RFC7296) and Secure Labeling
 Libreswan is based on Openswan-2.6.38 which in turn is based on FreeS/WAN-2.04
 
 %prep
-%setup -q -n libreswan-%{version}%{?prever}
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch1000 -p1
+%autosetup -n libreswan-%{version}%{?prever} -p1
 
 # linking to freebl is not needed
 sed -i "s/-lfreebl //" mk/config.mk
@@ -223,6 +216,10 @@ certutil -N -d sql:$tmpdir --empty-password
 %attr(0644,root,root) %doc %{_mandir}/*/*
 
 %changelog
+* Wed Apr 15 2026 Philippe Coval <philippe.coval@vates.tech> - 4.12-2.3.2
+- Rebuild with updated openssl
+- Update obsolete patch macro with autosetup
+
 * Fri Aug 16 2024 David Morel <david.morel@vates.tech> - 4.12-2.3.1
 - Sync with CentOS 8 Stream version 4.12-2.el8.3
 - Build with GCC 11
