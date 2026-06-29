@@ -37,7 +37,7 @@ Name: libreswan
 Summary: IPsec implementation with IKEv1 and IKEv2 keying protocols
 # version is generated in the release script
 Version: 4.12
-Release: 2.3.2%{?dist}
+Release: 2.3.3%{?dist}
 License: GPLv2
 Url: https://libreswan.org/
 
@@ -57,6 +57,9 @@ Patch8: libreswan-4.12-ikev2-auth-delete-state.patch
 
 # XCP-ng patches
 Patch1000: cve-2024-3652.patch
+Patch1001: libreswan-4.12-CVE-2026-12413.patch
+Patch1002: libreswan-4.12-CVE-2026-50721.patch
+Patch1003: libreswan-4.12-CVE-2026-50722.patch
 
 BuildRequires: audit-libs-devel
 BuildRequires: bison
@@ -216,6 +219,9 @@ certutil -N -d sql:$tmpdir --empty-password
 %attr(0644,root,root) %doc %{_mandir}/*/*
 
 %changelog
+* Mon Jun 29 2026 Lucas Ravagnier <lucas.ravagnier@vates.tech> - 4.12-2.3.3
+- Fix for CVE-2026-12413, CVE-2026-50721, CVE-2026-50722
+
 * Wed Apr 15 2026 Philippe Coval <philippe.coval@vates.tech> - 4.12-2.3.2
 - Rebuild with updated openssl
 - Update obsolete patch macro with autosetup
