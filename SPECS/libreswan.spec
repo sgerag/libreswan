@@ -6,7 +6,6 @@
 # minimum version for support for rhbz#1651314
 # should prob update for nss with IKEv1 quick mode support
 %global nss_version 3.53.1
-%global unbound_version 1.6.6
 %global libreswan_config \\\
     FINALLIBEXECDIR=%{_libexecdir}/ipsec \\\
     FINALMANDIR=%{_mandir} \\\
@@ -17,7 +16,7 @@
     PREFIX=%{_prefix} \\\
     PYTHON_BINARY=%{__python3} \\\
     SHELL_BINARY=%{_bindir}/sh \\\
-    USE_DNSSEC=true \\\
+    USE_DNSSEC=false \\\
     USE_FIPSCHECK=false \\\
     USE_LABELED_IPSEC=true \\\
     USE_LDAP=true \\\
@@ -37,7 +36,7 @@ Name: libreswan
 Summary: IPsec implementation with IKEv1 and IKEv2 keying protocols
 # version is generated in the release script
 Version: 4.12
-Release: 2.3.1%{?dist}
+Release: 2.3.2%{?dist}
 License: GPLv2
 Url: https://libreswan.org/
 
@@ -63,7 +62,6 @@ BuildRequires: bison
 BuildRequires: curl-devel
 BuildRequires: flex
 BuildRequires: devtoolset-11-gcc make
-BuildRequires: ldns-devel
 BuildRequires: libcap-ng-devel
 BuildRequires: libevent-devel
 BuildRequires: libseccomp-devel
@@ -77,7 +75,6 @@ BuildRequires: pkgconfig
 BuildRequires: hostname
 BuildRequires: redhat-rpm-config
 BuildRequires: systemd-devel
-BuildRequires: unbound-devel >= %{unbound_version}
 BuildRequires: xmlto
 %if 0%{with_efence}
 BuildRequires: ElectricFence
@@ -86,7 +83,6 @@ Requires: iproute >= 2.6.8
 Requires: nss >= %{nss_version}
 Requires: nss-softokn
 Requires: nss-tools
-Requires: unbound-libs >= %{unbound_version}
 Requires(post): bash
 Requires(post): coreutils
 Requires(post): systemd
@@ -223,6 +219,9 @@ certutil -N -d sql:$tmpdir --empty-password
 %attr(0644,root,root) %doc %{_mandir}/*/*
 
 %changelog
+* Wed Sep 02 2026 Stefanos Gerangelos <stefanos.gerangelos@vates.tech> - 4.12-2.3.2
+- Remove ldns (and DNSSEC)
+
 * Fri Aug 16 2024 David Morel <david.morel@vates.tech> - 4.12-2.3.1
 - Sync with CentOS 8 Stream version 4.12-2.el8.3
 - Build with GCC 11
