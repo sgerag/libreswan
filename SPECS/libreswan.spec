@@ -17,7 +17,7 @@
     PREFIX=%{_prefix} \\\
     PYTHON_BINARY=%{__python3} \\\
     SHELL_BINARY=%{_bindir}/sh \\\
-    USE_DNSSEC=true \\\
+    USE_DNSSEC=false \\\
     USE_FIPSCHECK=false \\\
     USE_LABELED_IPSEC=true \\\
     USE_LDAP=true \\\
@@ -37,9 +37,11 @@ Name: libreswan
 Summary: IPsec implementation with IKEv1 and IKEv2 keying protocols
 # version is generated in the release script
 Version: 4.12
-Release: 2.3.3%{?dist}
+Release: 2.3.4%{?dist}
 License: GPLv2
 Url: https://libreswan.org/
+
+Obsoletes: ldns <= 1.7.0-21.1.xcpng8.3
 
 Source0: https://download.libreswan.org/%{?prever:with_development/}%{name}-%{version}%{?prever}.tar.gz
 %if 0%{with_cavstests}
@@ -66,7 +68,6 @@ BuildRequires: bison
 BuildRequires: curl-devel
 BuildRequires: flex
 BuildRequires: devtoolset-11-gcc make
-BuildRequires: ldns-devel
 BuildRequires: libcap-ng-devel
 BuildRequires: libevent-devel
 BuildRequires: libseccomp-devel
@@ -80,7 +81,6 @@ BuildRequires: pkgconfig
 BuildRequires: hostname
 BuildRequires: redhat-rpm-config
 BuildRequires: systemd-devel
-BuildRequires: unbound-devel >= %{unbound_version}
 BuildRequires: xmlto
 %if 0%{with_efence}
 BuildRequires: ElectricFence
@@ -89,7 +89,6 @@ Requires: iproute >= 2.6.8
 Requires: nss >= %{nss_version}
 Requires: nss-softokn
 Requires: nss-tools
-Requires: unbound-libs >= %{unbound_version}
 Requires(post): bash
 Requires(post): coreutils
 Requires(post): systemd
@@ -219,6 +218,9 @@ certutil -N -d sql:$tmpdir --empty-password
 %attr(0644,root,root) %doc %{_mandir}/*/*
 
 %changelog
+* Thu Sep 03 2026 Stefanos Gerangelos <stefanos.gerangelos@vates.tech> - 4.12-2.3.4
+- Remove DNSSEC, which allows to remove ldns to avoid the regular security updates that comes with it
+
 * Mon Jun 29 2026 Lucas Ravagnier <lucas.ravagnier@vates.tech> - 4.12-2.3.3
 - Fix for CVE-2026-12413, CVE-2026-50721, CVE-2026-50722
 
